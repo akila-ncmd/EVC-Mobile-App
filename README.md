@@ -89,10 +89,17 @@ Three deviations from the source mockups, made deliberately:
 
 All three are enforced by `accessibility_test.dart` rather than left as prose.
 
-## Placeholder content
+## Placeholder content and licensing
 
-Artwork, titles and people in this build are **placeholders for demonstration
-only** and are not licensed for distribution. Swap `EvcArtwork`'s sources and
+> **Not for distribution.** This is a portfolio prototype. The artwork,
+> titles, and photographs shown are placeholders taken from the original
+> design mockups. They are **copyrighted by their respective owners**, are
+> used here only to demonstrate layout, and are **not licensed for
+> redistribution or commercial use**. No affiliation with or endorsement by
+> any rights holder is implied or claimed.
+
+Artwork, titles and people in this build are placeholders for demonstration
+only. Swap `EvcArtwork`'s sources and
 `MockData` before any public release. Demo audio is royalty-free
 (SoundHelix); demo video is Big Buck Bunny (Blender Foundation, CC-BY).
 
