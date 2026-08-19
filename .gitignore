@@ -34,3 +34,6 @@ ios/Flutter/flutter_export_environment.sh
 **/ios/**/*.mode1v3
 **/ios/**/*.moved-aside
 **/ios/**/*.pbxuser
+
+# Crash logs
+*.log
