@@ -112,8 +112,12 @@ vercel --prod # live
 ```
 
 `vercel.json` points at `scripts/vercel-build.sh`, which fetches the Flutter
-SDK on the build machine and runs `flutter build web --release`. The rewrite
-rule sends every path to `index.html` so deep links work.
+SDK on the build machine and runs `flutter build web --release`.
+
+The web build uses clean paths (`/home`) rather than hash URLs (`/#/home`),
+so the host must rewrite unknown paths to `index.html` — `vercel.json` does
+this. Vercel checks the filesystem before applying rewrites, so real assets
+still serve normally. Any other static host needs the same SPA fallback.
 
 Any static host works the same way — push `build/web` to Netlify, Firebase
 Hosting, GitHub Pages or Cloudflare Pages.
