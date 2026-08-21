@@ -84,6 +84,22 @@ Web build:
 flutter build web --release
 ```
 
+## Android APK
+
+```bash
+flutter build apk --release
+```
+
+Produces a universal APK (~56MB, arm64-v8a + armeabi-v7a + x86_64). For
+smaller per-device downloads use `--split-per-abi`.
+
+Release builds are signed with the debug key — fine for sideloading, not
+valid for the Play Store. Add a release keystore before publishing.
+
+> This project pins `path_provider_android` to 2.2.17. Version 2.3.x pulls in
+> `package:jni`, which forces the Android NDK toolchain even though nothing
+> here compiles native code — a ~2.5GB install for no benefit.
+
 ## Deploying to the web
 
 Flutter compiles to static files, so the app hosts anywhere that serves a
