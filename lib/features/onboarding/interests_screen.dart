@@ -20,16 +20,21 @@ class InterestsScreen extends ConsumerWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/interest_bg.png', fit: BoxFit.cover),
+          Image.asset(
+            'assets/images/interest_bg.png',
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomCenter,
+          ),
           DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
+                stops: const [0.0, 0.45, 1.0],
                 colors: [
                   AppColors.base,
-                  AppColors.base.withValues(alpha: 0.82),
-                  AppColors.deep.withValues(alpha: 0.9),
+                  AppColors.base.withValues(alpha: 0.7),
+                  AppColors.deep.withValues(alpha: 0.92),
                 ],
               ),
             ),

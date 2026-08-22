@@ -53,18 +53,21 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             _CategoryTile(
               label: 'Owned',
               kind: OwnershipKind.owned,
+              imageUrl: 'assets/images/art_avengers.png',
               seed: 0,
               onTap: () => context.push('/library/owned'),
             ),
             _CategoryTile(
               label: 'Rented',
               kind: OwnershipKind.rented,
+              imageUrl: 'assets/images/art_eminem.png',
               seed: 1,
               onTap: () => context.push('/library/rented'),
             ),
             _CategoryTile(
               label: 'Gifted',
               kind: OwnershipKind.gifted,
+              imageUrl: 'assets/images/art_cyclops.png',
               seed: 2,
               onTap: () => context.push('/library/gifted'),
             ),
@@ -82,12 +85,14 @@ class _CategoryTile extends ConsumerWidget {
     required this.kind,
     required this.seed,
     required this.onTap,
+    this.imageUrl,
   });
 
   final String label;
   final OwnershipKind kind;
   final int seed;
   final VoidCallback onTap;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -106,33 +111,55 @@ class _CategoryTile extends ConsumerWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            EvcArtwork(seed: seed, borderRadius: AppRadius.cardR),
+            EvcArtwork(
+              imageUrl: imageUrl,
+              seed: seed,
+              borderRadius: AppRadius.cardR,
+            ),
             Positioned(
-              left: AppSpacing.sm,
-              right: AppSpacing.sm,
-              bottom: AppSpacing.sm,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: AppTypography.sectionTitle.copyWith(
-                      color: AppColors.danger,
-                      shadows: const [
-                        Shadow(blurRadius: 8, color: Colors.black87),
-                      ],
-                    ),
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.sm,
+                  AppSpacing.lg,
+                  AppSpacing.sm,
+                  AppSpacing.sm,
+                ),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(AppRadius.card),
                   ),
-                  Text(
-                    '$count ${count == 1 ? 'title' : 'titles'}',
-                    style: AppTypography.caption.copyWith(
-                      color: Colors.white,
-                      shadows: const [
-                        Shadow(blurRadius: 6, color: Colors.black87),
-                      ],
-                    ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0x00000000), Color(0xE6120306)],
                   ),
-                ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: AppTypography.sectionTitle.copyWith(
+                        color: const Color(0xFFFF7C90),
+                        shadows: const [
+                          Shadow(blurRadius: 10, color: Colors.black),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '$count ${count == 1 ? 'title' : 'titles'}',
+                      style: AppTypography.caption.copyWith(
+                        color: Colors.white,
+                        shadows: const [
+                          Shadow(blurRadius: 6, color: Colors.black87),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -158,7 +185,10 @@ class _AddTile extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            EvcArtwork(seed: 4, borderRadius: AppRadius.cardR),
+            const EvcArtwork(
+              imageUrl: 'assets/images/art_ringspower.png',
+              borderRadius: AppRadius.cardR,
+            ),
             const Positioned(
               right: AppSpacing.sm,
               bottom: AppSpacing.sm,
@@ -232,6 +262,7 @@ class _OwnershipListScreenState extends ConsumerState<OwnershipListScreen> {
                     itemCount: items.length,
                     itemBuilder: (context, i) => EvcMediaRow(
                       title: items[i].title,
+                      imageUrl: items[i].imageUrl,
                       rounded: true,
                       seed: i,
                       metaLines: [

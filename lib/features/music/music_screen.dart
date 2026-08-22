@@ -144,7 +144,11 @@ class _PlaylistList extends StatelessWidget {
                             ),
                           ),
                         )
-                      : EvcArtwork(seed: i, borderRadius: BorderRadius.zero),
+                      : EvcArtwork(
+                          imageUrl: playlist.imageUrl,
+                          seed: i,
+                          borderRadius: BorderRadius.zero,
+                        ),
                 ),
                 Container(
                   width: 150,
@@ -207,7 +211,11 @@ class _TrackList extends ConsumerWidget {
           leading: SizedBox(
             width: 52,
             height: 52,
-            child: EvcArtwork(seed: i, borderRadius: AppRadius.posterR),
+            child: EvcArtwork(
+              imageUrl: track.imageUrl,
+              seed: i,
+              borderRadius: AppRadius.posterR,
+            ),
           ),
           title: Text(
             track.title,

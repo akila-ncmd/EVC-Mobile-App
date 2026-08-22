@@ -37,3 +37,6 @@ ios/Flutter/flutter_export_environment.sh
 
 # Crash logs
 *.log
+
+# Golden-test failure artifacts, written on every mismatch.
+/test/failures/

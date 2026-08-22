@@ -279,12 +279,14 @@ abstract final class MockData {
       name: 'Relaxing',
       owner: 'Namal Rashmika',
       trackIds: ['t5', 't6'],
+      imageUrl: 'assets/images/pl_relaxing.png',
     ),
     Playlist(
       id: 'pl3',
       name: 'Workout',
       owner: 'Namal Rashmika',
       trackIds: ['t3', 't4'],
+      imageUrl: 'assets/images/art_goku.png',
     ),
   ];
 

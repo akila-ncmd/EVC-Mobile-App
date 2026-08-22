@@ -47,6 +47,7 @@ class AnalyticsScreen extends ConsumerWidget {
             for (var i = 0; i < items.length; i++)
               EvcMediaRow(
                 title: items[i].title,
+                imageUrl: items[i].imageUrl,
                 seed: i,
                 metaLines: [
                   if (items[i].views != null) items[i].views!,
@@ -91,6 +92,7 @@ class MyVideosScreen extends ConsumerWidget {
               itemCount: items.length,
               itemBuilder: (context, i) => EvcMediaRow(
                 title: items[i].title,
+                imageUrl: items[i].imageUrl,
                 seed: i,
                 metaLines: [
                   if (items[i].views != null) items[i].views!,

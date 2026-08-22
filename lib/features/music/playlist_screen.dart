@@ -70,6 +70,7 @@ class PlaylistScreen extends ConsumerWidget {
                           width: 52,
                           height: 52,
                           child: EvcArtwork(
+                            imageUrl: track.imageUrl,
                             seed: i,
                             borderRadius: AppRadius.posterR,
                           ),

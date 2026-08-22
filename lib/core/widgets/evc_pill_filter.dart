@@ -120,18 +120,22 @@ class EvcTagChip extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 160),
         constraints: const BoxConstraints(minHeight: 48),
-        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: selected ? AppColors.deep : AppColors.blush,
           borderRadius: AppRadius.cardR,
           boxShadow: AppShadows.soft,
         ),
-        child: Text(
-          label,
-          style: AppTypography.caption.copyWith(
-            color: selected ? AppColors.blush : AppColors.textOnLight,
-            fontWeight: FontWeight.w700,
+        // Center with widthFactor keeps the 48px minimum height without
+        // letting the chip stretch to the full width of the Wrap.
+        child: Center(
+          widthFactor: 1,
+          child: Text(
+            label,
+            style: AppTypography.caption.copyWith(
+              color: selected ? AppColors.blush : AppColors.textOnLight,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),

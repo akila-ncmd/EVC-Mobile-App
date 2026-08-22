@@ -78,7 +78,10 @@ class _PublishTab extends ConsumerWidget {
             children: [
               const AspectRatio(
                 aspectRatio: 16 / 9,
-                child: EvcArtwork(seed: 1, borderRadius: BorderRadius.zero),
+                child: EvcArtwork(
+                  imageUrl: 'assets/images/studio_promo.png',
+                  borderRadius: BorderRadius.zero,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(AppSpacing.md),
@@ -158,6 +161,7 @@ class _UnpublishTab extends ConsumerWidget {
       itemCount: items.length,
       itemBuilder: (context, i) => EvcMediaRow(
         title: items[i].title,
+        imageUrl: items[i].imageUrl,
         seed: i,
         metaLines: [
           if (items[i].views != null) '${items[i].views} views',
