@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
@@ -84,22 +85,48 @@ class MyVideosScreen extends ConsumerWidget {
               title: 'No videos yet',
               message: 'Publish your first video from the studio.',
             )
-          : ListView.builder(
+          : ListView(
               padding: const EdgeInsets.only(
                 top: AppSpacing.lg,
                 bottom: AppSpacing.xl,
               ),
-              itemCount: items.length,
-              itemBuilder: (context, i) => EvcMediaRow(
-                title: items[i].title,
-                imageUrl: items[i].imageUrl,
-                seed: i,
-                metaLines: [
-                  if (items[i].views != null) items[i].views!,
-                  if (items[i].publishedAgo != null) items[i].publishedAgo!,
-                ],
-                trailing: const Icon(Icons.apps, color: AppColors.textDisplay),
-              ),
+              children: [
+                EvcStatStrip(
+                  tiles: [
+                    EvcStatTile(
+                      value: '${items.length}',
+                      label: 'published',
+                      icon: Icons.movie_outlined,
+                      emphasis: true,
+                    ),
+                    EvcStatTile(
+                      value: MockData.totalViews,
+                      label: 'total views',
+                      icon: Icons.visibility_outlined,
+                    ),
+                    EvcStatTile(
+                      value: '${MockData.averageRating}',
+                      label: 'avg rating',
+                      icon: Icons.star_outline,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                for (var i = 0; i < items.length; i++)
+                  EvcMediaRow(
+                    title: items[i].title,
+                    imageUrl: items[i].imageUrl,
+                    seed: i,
+                    metaLines: [
+                      if (items[i].views != null) items[i].views!,
+                      if (items[i].publishedAgo != null) items[i].publishedAgo!,
+                    ],
+                    trailing: const Icon(
+                      Icons.apps,
+                      color: AppColors.textDisplay,
+                    ),
+                  ),
+              ],
             ),
     );
   }
@@ -157,6 +184,9 @@ class AccountBalanceScreen extends ConsumerWidget {
               ),
             ),
           const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.lg),
+          const _EarningsTrend(),
+          const SizedBox(height: AppSpacing.lg),
           EvcButton(
             label: 'Withdraw',
             onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
@@ -166,6 +196,86 @@ class AccountBalanceScreen extends ConsumerWidget {
                   'Payouts are not enabled in this prototype',
                   style: AppTypography.body,
                 ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Six-month earnings trend. The balance screen otherwise ends halfway down
+/// the viewport with nothing to look at.
+class _EarningsTrend extends StatelessWidget {
+  const _EarningsTrend();
+
+  static const _months = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+  static const _values = <double>[4.2, 6.8, 5.1, 9.4, 7.6, 12.5];
+
+  @override
+  Widget build(BuildContext context) {
+    final peak = _values.reduce((a, b) => a > b ? a : b);
+
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: AppRadius.cardR,
+        border: Border.all(color: AppShadows.dividerColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Last six months', style: AppTypography.bodyStrong),
+          Text('Thousands of LKR', style: AppTypography.caption),
+          const SizedBox(height: AppSpacing.lg),
+          SizedBox(
+            height: 150,
+            child: BarChart(
+              BarChartData(
+                alignment: BarChartAlignment.spaceAround,
+                maxY: peak * 1.25,
+                borderData: FlBorderData(show: false),
+                gridData: const FlGridData(show: false),
+                barTouchData: BarTouchData(enabled: false),
+                titlesData: FlTitlesData(
+                  leftTitles: const AxisTitles(),
+                  topTitles: const AxisTitles(),
+                  rightTitles: const AxisTitles(),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 26,
+                      getTitlesWidget: (value, meta) => Padding(
+                        padding: const EdgeInsets.only(top: AppSpacing.sm),
+                        child: Text(
+                          _months[value.toInt() % _months.length],
+                          style: AppTypography.caption,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                barGroups: [
+                  for (var i = 0; i < _values.length; i++)
+                    BarChartGroupData(
+                      x: i,
+                      barRods: [
+                        BarChartRodData(
+                          toY: _values[i],
+                          width: 20,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(6),
+                          ),
+                          // The latest month reads as the headline.
+                          color: i == _values.length - 1
+                              ? AppColors.blush
+                              : AppColors.pill,
+                        ),
+                      ],
+                    ),
+                ],
               ),
             ),
           ),

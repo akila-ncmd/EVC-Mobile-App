@@ -26,6 +26,7 @@ class MediaItem {
     this.publishedAgo,
     this.imageUrl,
     this.mediaUrl,
+    this.progress = 0,
   });
 
   final String id;
@@ -45,6 +46,9 @@ class MediaItem {
   final String? publishedAgo;
   final String? imageUrl;
   final String? mediaUrl;
+
+  /// How far through the title the viewer is, 0..1.
+  final double progress;
 
   /// "2005 - Drama - 5 seasons"
   String get subtitle => [

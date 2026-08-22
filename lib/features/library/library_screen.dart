@@ -74,6 +74,103 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             _AddTile(onTap: () => context.push('/search')),
           ],
         ),
+        const SizedBox(height: AppSpacing.xl),
+        const _ContinueWatching(),
+        const SizedBox(height: AppSpacing.xl),
+        const _LibrarySummary(),
+      ],
+    );
+  }
+}
+
+/// Resume rail — the fastest route back into something already started.
+class _ContinueWatching extends ConsumerWidget {
+  const _ContinueWatching();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final overrides = ref.watch(libraryProvider);
+    final items =
+        ref
+            .watch(mediaRepositoryProvider)
+            .videos()
+            .where(
+              (v) => (overrides[v.id] ?? v.ownership) != OwnershipKind.none,
+            )
+            .where((v) => v.progress > 0 && v.progress < 1)
+            .toList()
+          ..sort((a, b) => b.progress.compareTo(a.progress));
+
+    if (items.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const EvcSectionHeader(title: 'Continue watching'),
+        SizedBox(
+          height: 152,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
+            itemCount: items.length,
+            separatorBuilder: (context, index) =>
+                const SizedBox(width: AppSpacing.md),
+            itemBuilder: (context, i) => EvcAppear(
+              index: i,
+              child: EvcContinueCard(
+                title: items[i].title,
+                imageUrl: items[i].imageUrl,
+                progress: items[i].progress,
+                seed: i,
+                onTap: () => context.push('/player/${items[i].id}'),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// At-a-glance totals so the screen closes with substance rather than blank
+/// space.
+class _LibrarySummary extends ConsumerWidget {
+  const _LibrarySummary();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final overrides = ref.watch(libraryProvider);
+    final all = ref.watch(mediaRepositoryProvider).videos();
+    OwnershipKind kindOf(MediaItem v) => overrides[v.id] ?? v.ownership;
+
+    final owned = all.where((v) => kindOf(v) != OwnershipKind.none).toList();
+    final hours = (owned.length * 1.6).toStringAsFixed(1);
+    final started = owned.where((v) => v.progress > 0).length;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const EvcSectionHeader(title: 'Your library'),
+        EvcStatStrip(
+          tiles: [
+            EvcStatTile(
+              value: '${owned.length}',
+              label: 'titles',
+              icon: Icons.video_library_outlined,
+              emphasis: true,
+            ),
+            EvcStatTile(
+              value: '$started',
+              label: 'in progress',
+              icon: Icons.play_circle_outline,
+            ),
+            EvcStatTile(
+              value: '${hours}h',
+              label: 'watch time',
+              icon: Icons.schedule,
+            ),
+          ],
+        ),
       ],
     );
   }

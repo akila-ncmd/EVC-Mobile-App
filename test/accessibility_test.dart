@@ -37,9 +37,14 @@ void main() {
     tester.view.devicePixelRatio = 2.0;
     addTearDown(tester.view.reset);
 
-    final handle = tester.ensureSemantics();
+    // Lay the screen out before switching semantics on. Enabling it first
+    // makes the framework walk a viewport that has not been laid out yet,
+    // which throws inside visitChildrenForSemantics.
     await tester.pumpWidget(host(screen));
     await tester.pump(const Duration(milliseconds: 400));
+
+    final handle = tester.ensureSemantics();
+    await tester.pump();
 
     await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
     await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));

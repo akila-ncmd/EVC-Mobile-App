@@ -127,8 +127,74 @@ class _PublishVideoScreenState extends ConsumerState<PublishVideoScreen> {
               ),
             ] else
               EvcButton(label: 'PUBLISH', onPressed: _publish),
+            const SizedBox(height: AppSpacing.xl),
+            const _PublishingTips(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Short checklist under the form — turns dead space into guidance and sets
+/// expectations before the upload starts.
+class _PublishingTips extends StatelessWidget {
+  const _PublishingTips();
+
+  static const _tips = <(IconData, String, String)>[
+    (Icons.hd_outlined, 'Upload in 1080p or better', 'MP4 or MOV, up to 4GB'),
+    (
+      Icons.image_outlined,
+      'Add a bold thumbnail',
+      'It drives most of your click-through',
+    ),
+    (
+      Icons.schedule_outlined,
+      'Review takes about an hour',
+      'You will be notified when it goes live',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: AppRadius.cardR,
+        border: Border.all(color: AppShadows.dividerColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Before you publish', style: AppTypography.bodyStrong),
+          const SizedBox(height: AppSpacing.md),
+          for (final (icon, title, detail) in _tips)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.md),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(icon, size: 20, color: AppColors.blush),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: AppTypography.body.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(detail, style: AppTypography.caption),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }

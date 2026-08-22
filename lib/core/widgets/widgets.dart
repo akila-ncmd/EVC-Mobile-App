@@ -5,6 +5,7 @@ export 'evc_media.dart';
 export 'evc_navigation.dart';
 export 'evc_pill_filter.dart';
 export 'evc_scaffold.dart';
+export 'evc_stats.dart';
 export 'evc_surfaces.dart';
 export 'evc_video_player.dart';
 export 'phone_frame.dart';

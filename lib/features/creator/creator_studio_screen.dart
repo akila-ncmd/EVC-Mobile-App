@@ -66,7 +66,8 @@ class _PublishTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final creator = ref.watch(creatorProvider);
 
-    return Column(
+    return ListView(
+      padding: EdgeInsets.zero,
       children: [
         Container(
           decoration: const BoxDecoration(
@@ -124,13 +125,50 @@ class _PublishTab extends ConsumerWidget {
             ],
           ),
         ),
-        const Spacer(),
-        Text(
-          '${creator.published.length} published · '
-          '${creator.unpublished.length} unpublished',
-          style: AppTypography.meta,
+        const SizedBox(height: AppSpacing.lg),
+        EvcStatStrip(
+          tiles: [
+            EvcStatTile(
+              value: MockData.totalViews,
+              label: 'total views',
+              icon: Icons.visibility_outlined,
+              emphasis: true,
+            ),
+            EvcStatTile(
+              value: '${creator.published.length}',
+              label: 'published',
+              icon: Icons.movie_outlined,
+            ),
+            EvcStatTile(
+              value: '${MockData.averageRating}',
+              label: 'avg rating',
+              icon: Icons.star_outline,
+            ),
+          ],
         ),
-        const SizedBox(height: AppSpacing.md),
+        const SizedBox(height: AppSpacing.lg),
+        EvcSectionHeader(
+          title: 'Recent uploads',
+          actionLabel: 'See all',
+          onAction: () => context.push('/creator/videos'),
+        ),
+        for (var i = 0; i < creator.published.take(2).length; i++)
+          EvcAppear(
+            index: i,
+            child: EvcMediaRow(
+              title: creator.published[i].title,
+              imageUrl: creator.published[i].imageUrl,
+              seed: i,
+              metaLines: [
+                if (creator.published[i].views != null)
+                  '${creator.published[i].views} views',
+                if (creator.published[i].publishedAgo != null)
+                  creator.published[i].publishedAgo!,
+              ],
+              onTap: () => context.push('/creator/videos'),
+            ),
+          ),
+        const SizedBox(height: AppSpacing.lg),
         EvcButton.light(
           label: 'Publish Videos',
           onPressed: () => context.push('/creator/publish'),

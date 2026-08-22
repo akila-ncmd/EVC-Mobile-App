@@ -105,6 +105,7 @@ abstract final class MockData {
       likes: 10000,
       dislikes: 780,
       ownership: OwnershipKind.rented,
+      progress: 0.62,
     ),
     MediaItem(
       id: 'v2',
@@ -115,6 +116,7 @@ abstract final class MockData {
       genre: 'Fantasy',
       seasons: 1,
       imdb: 8.2,
+      progress: 0.28,
       ownership: OwnershipKind.owned,
     ),
     MediaItem(
@@ -125,6 +127,7 @@ abstract final class MockData {
       year: 2015,
       genre: 'Action',
       imdb: 7.3,
+      progress: 0.85,
       ownership: OwnershipKind.owned,
     ),
     MediaItem(
@@ -146,6 +149,7 @@ abstract final class MockData {
       genre: 'Fantasy',
       seasons: 1,
       imdb: 6.9,
+      progress: 0.15,
       ownership: OwnershipKind.gifted,
     ),
   ];
