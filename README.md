@@ -11,7 +11,7 @@ Listeners stream, own, rent and gift titles. Creators publish and monetise their
 ![Flutter](https://img.shields.io/badge/Flutter-3.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.12-0175C2?logo=dart&logoColor=white)
 ![Riverpod](https://img.shields.io/badge/state-Riverpod-4B32C3)
-![Tests](https://img.shields.io/badge/tests-53%20passing-3DBE7C)
+![Tests](https://img.shields.io/badge/tests-59%20passing-3DBE7C)
 ![Screens](https://img.shields.io/badge/screens-26-790520)
 
 </div>
@@ -39,7 +39,7 @@ Publish a video in the studio and it appears in My Videos and Analytics.
 - **Design system first** — 20 shared components driven by one token file
 - **Real playback** — `just_audio` for music, `video_player` for video, with
   explicit loading and failure states
-- **53 tests** — golden renders of every screen, behaviour coverage of the
+- **59 tests** — golden renders of every screen, behaviour coverage of the
   state layer, and an accessibility audit against Flutter's WCAG guidelines
 - **Repository pattern** over mock data — swap in a real API without touching
   a single screen
@@ -133,6 +133,8 @@ flutter test
 | `screens_golden_test.dart` | Renders all 26 screens offscreen and diffs against reference images |
 | `behaviour_test.dart` | Ownership, search, publishing, following, session state |
 | `accessibility_test.dart` | Tap-target size, text contrast, screen-reader labels |
+| `phone_frame_test.dart` | Pass-through on phone and tablet widths, phone dimensions reported on desktop, scale-down rather than clipping in a short window |
+| `desktop_frame_golden_test.dart` | What a desktop browser actually shows: the app letterboxed at phone size |
 
 Goldens in `test/goldens/` double as a visual record of every screen. Refresh
 after intentional UI changes:
