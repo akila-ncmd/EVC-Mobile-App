@@ -48,7 +48,7 @@ class AboutScreen extends ConsumerWidget {
           Align(
             alignment: Alignment.centerRight,
             child: TextButton.icon(
-              onPressed: () => context.push('/player/${item.id}'),
+              onPressed: () => context.push('/watch/${item.id}'),
               icon: const Icon(
                 Icons.open_in_full,
                 color: AppColors.textDisplay,

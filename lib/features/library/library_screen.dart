@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
@@ -34,7 +35,15 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             children: [
               const Icon(Icons.more_vert, color: AppColors.textDisplay),
               const SizedBox(width: AppSpacing.sm),
-              Text('My Library', style: AppTypography.screenTitle),
+              // The title is wide enough to overflow a 393pt phone once the
+              // icon takes its share, so let it scale rather than clip.
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text('My Library', style: AppTypography.screenTitle),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -56,21 +65,21 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 kind: OwnershipKind.owned,
                 imageUrl: 'assets/images/art_avengers.png',
                 seed: 0,
-                onTap: () => context.push('/library/owned'),
+                onTap: () => context.pushInTab('owned'),
               ),
               _CategoryTile(
                 label: 'Rented',
                 kind: OwnershipKind.rented,
                 imageUrl: 'assets/images/art_eminem.png',
                 seed: 1,
-                onTap: () => context.push('/library/rented'),
+                onTap: () => context.pushInTab('rented'),
               ),
               _CategoryTile(
                 label: 'Gifted',
                 kind: OwnershipKind.gifted,
                 imageUrl: 'assets/images/art_cyclops.png',
                 seed: 2,
-                onTap: () => context.push('/library/gifted'),
+                onTap: () => context.pushInTab('gifted'),
               ),
               _AddTile(onTap: () => context.push('/search')),
             ],
@@ -372,7 +381,7 @@ class _OwnershipListScreenState extends ConsumerState<OwnershipListScreen> {
                         Icons.apps,
                         color: AppColors.textDisplay,
                       ),
-                      onTap: () => context.push('/about/${items[i].id}'),
+                      onTap: () => context.pushInTab('about/${items[i].id}'),
                     ),
                   ),
           ),

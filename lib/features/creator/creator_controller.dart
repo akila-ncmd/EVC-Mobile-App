@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../data/local_store.dart';
 import '../../data/mock/mock_data.dart';
 import '../../data/models/models.dart';
 
@@ -42,8 +43,24 @@ class CreatorState {
 }
 
 class CreatorController extends Notifier<CreatorState> {
+  AppPersistence get _store => ref.read(persistenceProvider);
+
   @override
-  CreatorState build() => const CreatorState();
+  CreatorState build() => CreatorState(
+    status: {
+      for (final e in _store.publishStatus.entries)
+        e.key: e.value ? PublishState.published : PublishState.unpublished,
+    },
+    drafts: _store.drafts,
+  );
+
+  void _persist() => _store.saveCreator(
+    status: {
+      for (final e in state.status.entries)
+        e.key: e.value == PublishState.published,
+    },
+    drafts: state.drafts,
+  );
 
   void toggle(String id) {
     final next = Map<String, PublishState>.from(state.status);
@@ -51,6 +68,7 @@ class CreatorController extends Notifier<CreatorState> {
         ? PublishState.unpublished
         : PublishState.published;
     state = state.copyWith(status: next);
+    _persist();
   }
 
   /// Adds a locally "uploaded" video. No backend — the draft lives in memory.
@@ -64,6 +82,7 @@ class CreatorController extends Notifier<CreatorState> {
       publishedAgo: 'just now',
     );
     state = state.copyWith(drafts: [...state.drafts, item]);
+    _persist();
   }
 }
 

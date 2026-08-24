@@ -36,14 +36,20 @@ void main() {
     expect(find.text('680'), findsOneWidget);
   });
 
-  testWidgets('desktop width reports phone dimensions to the app', (tester) async {
+  testWidgets('desktop width reports phone dimensions to the app', (
+    tester,
+  ) async {
     await pumpAt(tester, const Size(1440, 900));
-    expect(find.text('393'), findsOneWidget,
-        reason: 'the app should believe it is on a phone, not a 1440px desktop');
+    expect(
+      find.text('393'),
+      findsOneWidget,
+      reason: 'the app should believe it is on a phone, not a 1440px desktop',
+    );
   });
 
-  testWidgets('a short desktop window scales down instead of clipping',
-      (tester) async {
+  testWidgets('a short desktop window scales down instead of clipping', (
+    tester,
+  ) async {
     await pumpAt(tester, const Size(1440, 620));
     // No overflow exception means it scaled to fit rather than clipping.
     expect(find.byType(FittedBox), findsWidgets);

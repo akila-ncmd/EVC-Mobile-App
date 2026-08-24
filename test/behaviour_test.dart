@@ -18,8 +18,8 @@ void main() {
     test('renting a title moves it into the rented shelf', () {
       final repo = container.read(mediaRepositoryProvider);
       final target = repo.videos().firstWhere(
-            (v) => v.ownership == OwnershipKind.owned,
-          );
+        (v) => v.ownership == OwnershipKind.owned,
+      );
 
       container
           .read(libraryProvider.notifier)
@@ -48,14 +48,16 @@ void main() {
 
   group('search', () {
     test('matches on title', () async {
-      final results =
-          await container.read(mediaRepositoryProvider).search('loki');
+      final results = await container
+          .read(mediaRepositoryProvider)
+          .search('loki');
       expect(results.single.title, 'Loki Season-1');
     });
 
     test('matches on genre', () async {
-      final results =
-          await container.read(mediaRepositoryProvider).search('fantasy');
+      final results = await container
+          .read(mediaRepositoryProvider)
+          .search('fantasy');
       expect(results.length, greaterThanOrEqualTo(2));
     });
 
@@ -66,8 +68,9 @@ void main() {
     });
 
     test('a nonsense query returns nothing', () async {
-      final results =
-          await container.read(mediaRepositoryProvider).search('zzzzz');
+      final results = await container
+          .read(mediaRepositoryProvider)
+          .search('zzzzz');
       expect(results, isEmpty);
     });
   });
@@ -129,9 +132,9 @@ void main() {
 
   group('session', () {
     test('sign in populates the profile', () async {
-      await container.read(sessionProvider.notifier).signIn(
-            email: 'namal@gmail.com',
-          );
+      await container
+          .read(sessionProvider.notifier)
+          .signIn(email: 'namal@gmail.com');
 
       final session = container.read(sessionProvider);
       expect(session.signedIn, isTrue);

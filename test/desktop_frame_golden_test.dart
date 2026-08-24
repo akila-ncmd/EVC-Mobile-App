@@ -1,6 +1,6 @@
+import 'package:evc_app/core/router/app_router.dart';
 import 'package:evc_app/core/theme/app_theme.dart';
 import 'package:evc_app/core/widgets/phone_frame.dart';
-import 'package:evc_app/features/shell/home_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,14 +24,7 @@ void main() {
           theme: AppTheme.dark,
           builder: (context, child) =>
               PhoneFrame(child: child ?? const SizedBox()),
-          routerConfig: GoRouter(
-            routes: [
-              GoRoute(
-                path: '/',
-                builder: (context, state) => const HomeShell(),
-              ),
-            ],
-          ),
+          routerConfig: createRouter(initialLocation: '/home'),
         ),
       ),
     );
@@ -54,6 +47,12 @@ void main() {
     );
   }
 
-  testWidgets('desktop 1440x900', (t) => shoot(t, '27_desktop_frame', const Size(1440, 900)));
-  testWidgets('short desktop 1280x640', (t) => shoot(t, '28_desktop_short', const Size(1280, 640)));
+  testWidgets(
+    'desktop 1440x900',
+    (t) => shoot(t, '27_desktop_frame', const Size(1440, 900)),
+  );
+  testWidgets(
+    'short desktop 1280x640',
+    (t) => shoot(t, '28_desktop_short', const Size(1280, 640)),
+  );
 }

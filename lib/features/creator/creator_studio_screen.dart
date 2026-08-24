@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
@@ -118,7 +118,9 @@ class _PublishTab extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    EvcFab(onPressed: () => context.push('/creator/publish')),
+                    EvcFab(
+                      onPressed: () => context.pushInTab('creator/publish'),
+                    ),
                   ],
                 ),
               ),
@@ -150,7 +152,7 @@ class _PublishTab extends ConsumerWidget {
         EvcSectionHeader(
           title: 'Recent uploads',
           actionLabel: 'See all',
-          onAction: () => context.push('/creator/videos'),
+          onAction: () => context.pushInTab('creator/videos'),
         ),
         for (var i = 0; i < creator.published.take(2).length; i++)
           EvcAppear(
@@ -165,13 +167,13 @@ class _PublishTab extends ConsumerWidget {
                 if (creator.published[i].publishedAgo != null)
                   creator.published[i].publishedAgo!,
               ],
-              onTap: () => context.push('/creator/videos'),
+              onTap: () => context.pushInTab('creator/videos'),
             ),
           ),
         const SizedBox(height: AppSpacing.lg),
         EvcButton.light(
           label: 'Publish Videos',
-          onPressed: () => context.push('/creator/publish'),
+          onPressed: () => context.pushInTab('creator/publish'),
         ),
         const SizedBox(height: AppSpacing.lg),
       ],

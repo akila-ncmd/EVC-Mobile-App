@@ -32,15 +32,19 @@ Future<void> loadTestFonts() async {
   }
 }
 
-Future<void> _load(String family, List<String> paths) =>
-    _loadFiles(family, paths.map(File.new).where((f) => f.existsSync()).toList());
+Future<void> _load(String family, List<String> paths) => _loadFiles(
+  family,
+  paths.map(File.new).where((f) => f.existsSync()).toList(),
+);
 
 Future<void> _loadFiles(String family, List<File> files) async {
   if (files.isEmpty) return;
   final loader = FontLoader(family);
   for (final file in files) {
     final bytes = await file.readAsBytes();
-    loader.addFont(Future.value(ByteData.view(Uint8List.fromList(bytes).buffer)));
+    loader.addFont(
+      Future.value(ByteData.view(Uint8List.fromList(bytes).buffer)),
+    );
   }
   await loader.load();
 }

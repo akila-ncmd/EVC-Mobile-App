@@ -43,6 +43,7 @@ dependencies:
   just_audio: ^0.10.6
   video_player: ^2.14.0
   shimmer: ^3.0.0
+  shared_preferences: ^2.5.5
 
 # path_provider_android 2.3.x depends on package:jni, which forces the whole
 # Android NDK toolchain (~2.5GB) even though nothing in this project compiles

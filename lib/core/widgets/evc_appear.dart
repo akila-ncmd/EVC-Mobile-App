@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// Subtle entrance animation: fade plus a short upward slide.
@@ -31,6 +32,8 @@ class _EvcAppearState extends State<EvcAppear>
     duration: widget.duration,
   );
 
+  Timer? _stagger;
+
   late final Animation<double> _curve = CurvedAnimation(
     parent: _c,
     curve: Curves.easeOutCubic,
@@ -44,7 +47,9 @@ class _EvcAppearState extends State<EvcAppear>
     if (delay == Duration.zero) {
       _c.forward();
     } else {
-      Future<void>.delayed(delay, () {
+      // Held so dispose can cancel it. An uncancelled delay outlives the
+      // widget, which leaks a pending timer and fails widget tests.
+      _stagger = Timer(delay, () {
         if (mounted) _c.forward();
       });
     }
@@ -52,6 +57,7 @@ class _EvcAppearState extends State<EvcAppear>
 
   @override
   void dispose() {
+    _stagger?.cancel();
     _c.dispose();
     super.dispose();
   }

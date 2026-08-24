@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/widgets.dart';
 import '../../data/mock/mock_data.dart';
@@ -53,22 +54,22 @@ class CreatorHubScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
           EvcButton(
             label: 'Publish New Video',
-            onPressed: () => context.push('/creator/publish'),
+            onPressed: () => context.pushInTab('creator/publish'),
           ),
           const SizedBox(height: AppSpacing.md),
           EvcButton(
             label: 'Manage Publication',
-            onPressed: () => context.push('/creator/studio'),
+            onPressed: () => context.pushInTab('creator/studio'),
           ),
           const SizedBox(height: AppSpacing.md),
           EvcButton(
             label: 'Video Distribution',
-            onPressed: () => context.push('/creator/videos'),
+            onPressed: () => context.pushInTab('creator/videos'),
           ),
           const SizedBox(height: AppSpacing.md),
           EvcButton(
             label: 'Check Account Balance',
-            onPressed: () => context.push('/creator/balance'),
+            onPressed: () => context.pushInTab('creator/balance'),
           ),
           const SizedBox(height: AppSpacing.md),
           EvcButton(label: 'Settings', onPressed: () => context.pop()),
@@ -76,7 +77,7 @@ class CreatorHubScreen extends ConsumerWidget {
           EvcSectionHeader(
             title: 'Recent uploads',
             actionLabel: 'See all',
-            onAction: () => context.push('/creator/videos'),
+            onAction: () => context.pushInTab('creator/videos'),
           ),
           for (var i = 0; i < published.take(2).length; i++)
             EvcAppear(
@@ -90,7 +91,7 @@ class CreatorHubScreen extends ConsumerWidget {
                   if (published[i].publishedAgo != null)
                     published[i].publishedAgo!,
                 ],
-                onTap: () => context.push('/creator/videos'),
+                onTap: () => context.pushInTab('creator/videos'),
               ),
             ),
         ],

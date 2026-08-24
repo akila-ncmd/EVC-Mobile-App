@@ -99,7 +99,7 @@ class SettingsScreen extends ConsumerWidget {
         EvcButton(
           label: 'Creator studio',
           variant: EvcButtonVariant.secondary,
-          onPressed: () => context.push('/creator'),
+          onPressed: () => context.go('/settings/creator'),
         ),
         const SizedBox(height: AppSpacing.sm),
         EvcButton(

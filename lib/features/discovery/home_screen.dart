@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
@@ -89,7 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               title: Text('Creator studio', style: AppTypography.bodyStrong),
               onTap: () {
                 Navigator.pop(context);
-                context.push('/creator');
+                context.go('/settings/creator');
               },
             ),
             ListTile(
@@ -132,7 +133,7 @@ class _FollowStrip extends StatelessWidget {
         itemBuilder: (context, i) {
           final person = people[i];
           return GestureDetector(
-            onTap: () => context.push('/people'),
+            onTap: () => context.pushInTab('people'),
             child: SizedBox(
               width: 68,
               child: Column(
@@ -242,7 +243,7 @@ class _Tile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () => context.push('/about/${item.id}'),
+            onTap: () => context.pushInTab('about/${item.id}'),
             child: SizedBox(
               height: 148,
               child: EvcArtwork(

@@ -23,14 +23,14 @@ void main() {
   setUpAll(loadTestFonts);
 
   Widget host(Widget child) => ProviderScope(
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.dark,
-          routerConfig: GoRouter(
-            routes: [GoRoute(path: '/', builder: (context, state) => child)],
-          ),
-        ),
-      );
+    child: MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.dark,
+      routerConfig: GoRouter(
+        routes: [GoRoute(path: '/', builder: (context, state) => child)],
+      ),
+    ),
+  );
 
   Future<void> audit(WidgetTester tester, Widget screen) async {
     tester.view.physicalSize = const Size(750, 1624);
@@ -57,10 +57,18 @@ void main() {
   testWidgets('sign in', (t) => audit(t, const SignInScreen()));
   testWidgets('home', (t) => audit(t, const Scaffold(body: HomeScreen())));
   testWidgets('about', (t) => audit(t, const AboutScreen(id: 'v1')));
-  testWidgets('library', (t) => audit(t, const Scaffold(body: LibraryScreen())));
-  testWidgets('owned', (t) =>
-      audit(t, const OwnershipListScreen(kind: OwnershipKind.owned)));
-  testWidgets('settings', (t) => audit(t, const Scaffold(body: SettingsScreen())));
+  testWidgets(
+    'library',
+    (t) => audit(t, const Scaffold(body: LibraryScreen())),
+  );
+  testWidgets(
+    'owned',
+    (t) => audit(t, const OwnershipListScreen(kind: OwnershipKind.owned)),
+  );
+  testWidgets(
+    'settings',
+    (t) => audit(t, const Scaffold(body: SettingsScreen())),
+  );
   testWidgets('creator hub', (t) => audit(t, const CreatorHubScreen()));
   testWidgets('creator studio', (t) => audit(t, const CreatorStudioScreen()));
   testWidgets('people', (t) => audit(t, const PeopleScreen(initialTab: 1)));

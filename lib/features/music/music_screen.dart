@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
@@ -41,47 +41,55 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
           child: Row(
             children: [
-              GestureDetector(
-                onTap: () => setState(() => _playlists = true),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _playlists ? AppColors.paper : Colors.transparent,
-                    borderRadius: AppRadius.cardR,
-                  ),
-                  child: Text(
-                    'Playlists',
-                    style: AppTypography.bodyStrong.copyWith(
-                      color: _playlists
-                          ? AppColors.textOnLight
-                          : AppColors.textDisplay,
+              Flexible(
+                child: GestureDetector(
+                  onTap: () => setState(() => _playlists = true),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                      vertical: AppSpacing.sm,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _playlists ? AppColors.paper : Colors.transparent,
+                      borderRadius: AppRadius.cardR,
+                    ),
+                    child: Text(
+                      'Playlists',
+                      style: AppTypography.bodyStrong.copyWith(
+                        color: _playlists
+                            ? AppColors.textOnLight
+                            : AppColors.textDisplay,
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: AppSpacing.lg),
-              GestureDetector(
-                onTap: () => setState(() => _playlists = false),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.swap_vert,
-                      color: _playlists
-                          ? AppColors.textMuted
-                          : AppColors.textDisplay,
-                    ),
-                    Text(
-                      'Recents',
-                      style: AppTypography.bodyStrong.copyWith(
+              Flexible(
+                child: GestureDetector(
+                  onTap: () => setState(() => _playlists = false),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.swap_vert,
                         color: _playlists
                             ? AppColors.textMuted
                             : AppColors.textDisplay,
                       ),
-                    ),
-                  ],
+                      Flexible(
+                        child: Text(
+                          'Recents',
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTypography.bodyStrong.copyWith(
+                            color: _playlists
+                                ? AppColors.textMuted
+                                : AppColors.textDisplay,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -118,7 +126,7 @@ class _PlaylistList extends StatelessWidget {
       itemBuilder: (context, i) {
         final playlist = playlists[i];
         return GestureDetector(
-          onTap: () => context.push('/playlist/${playlist.id}'),
+          onTap: () => context.pushInTab('playlist/${playlist.id}'),
           child: SizedBox(
             width: 150,
             child: Column(

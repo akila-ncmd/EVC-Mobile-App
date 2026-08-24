@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'local_store.dart';
 import 'mock/mock_data.dart';
 import 'models/models.dart';
 
@@ -83,10 +84,12 @@ final mediaRepositoryProvider = Provider<MediaRepository>(
 /// Ownership changes made during the session (own / rent / gift).
 class LibraryController extends Notifier<Map<String, OwnershipKind>> {
   @override
-  Map<String, OwnershipKind> build() => {};
+  Map<String, OwnershipKind> build() => ref.read(persistenceProvider).ownership;
 
-  void setOwnership(String id, OwnershipKind kind) =>
-      state = {...state, id: kind};
+  void setOwnership(String id, OwnershipKind kind) {
+    state = {...state, id: kind};
+    ref.read(persistenceProvider).saveOwnership(state);
+  }
 
   OwnershipKind resolve(MediaItem item) => state[item.id] ?? item.ownership;
 }

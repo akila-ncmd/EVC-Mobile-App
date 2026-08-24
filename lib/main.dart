@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app_scroll_behavior.dart';
 import 'core/router/app_router.dart';
+import 'data/local_store.dart';
 import 'core/theme/app_theme.dart';
 import 'core/url_strategy/url_strategy.dart';
 import 'core/widgets/phone_frame.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   configureUrlStrategy();
-  runApp(const ProviderScope(child: EvcApp()));
+
+  // Loaded before the first frame so the app opens straight into the state
+  // the user left it in, rather than flashing signed-out first.
+  final prefs = await SharedPreferences.getInstance();
+
+  runApp(
+    ProviderScope(
+      overrides: [keyValueStoreProvider.overrideWithValue(PrefsStore(prefs))],
+      child: const EvcApp(),
+    ),
+  );
 }
 
 class EvcApp extends StatelessWidget {

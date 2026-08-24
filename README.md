@@ -11,7 +11,7 @@ Listeners stream, own, rent and gift titles. Creators publish and monetise their
 ![Flutter](https://img.shields.io/badge/Flutter-3.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.12-0175C2?logo=dart&logoColor=white)
 ![Riverpod](https://img.shields.io/badge/state-Riverpod-4B32C3)
-![Tests](https://img.shields.io/badge/tests-59%20passing-3DBE7C)
+![Tests](https://img.shields.io/badge/tests-81%20passing-3DBE7C)
 ![Screens](https://img.shields.io/badge/screens-26-790520)
 
 </div>
@@ -39,8 +39,13 @@ Publish a video in the studio and it appears in My Videos and Analytics.
 - **Design system first** — 20 shared components driven by one token file
 - **Real playback** — `just_audio` for music, `video_player` for video, with
   explicit loading and failure states
-- **59 tests** — golden renders of every screen, behaviour coverage of the
-  state layer, and an accessibility audit against Flutter's WCAG guidelines
+- **81 tests** — golden renders of every screen, behaviour and persistence
+  coverage of the state layer, navigation guarantees, and an accessibility
+  audit against Flutter's WCAG guidelines
+- **Persistent bottom navigation** — each tab keeps its own history and scroll
+  position; only video playback goes full-screen
+- **State survives a restart** — sign-in, library, follows and drafts are
+  written to local storage behind the repository layer
 - **Repository pattern** over mock data — swap in a real API without touching
   a single screen
 
@@ -135,6 +140,8 @@ flutter test
 | `accessibility_test.dart` | Tap-target size, text contrast, screen-reader labels |
 | `phone_frame_test.dart` | Pass-through on phone and tablet widths, phone dimensions reported on desktop, scale-down rather than clipping in a short window |
 | `desktop_frame_golden_test.dart` | What a desktop browser actually shows: the app letterboxed at phone size |
+| `navigation_test.dart` | The bottom bar survives every tab's detail routes, the player is immersive, and pre-shell deep links still resolve |
+| `persistence_test.dart` | Session, library, follows and drafts round-trip a restart, and a corrupt blob falls back to defaults |
 
 Goldens in `test/goldens/` double as a visual record of every screen. Refresh
 after intentional UI changes:
@@ -167,7 +174,9 @@ lib/
    └─ session.dart
 ```
 
-**State**: Riverpod · **Navigation**: go_router · **Charts**: fl_chart
+**State**: Riverpod · **Navigation**: go_router (`StatefulShellRoute`, one
+navigator per tab) · **Charts**: fl_chart · **Storage**: shared_preferences
+behind a `KeyValueStore` interface, so tests run fully in memory
 
 ## Design decisions
 

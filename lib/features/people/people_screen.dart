@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/widgets.dart';
+import '../../data/local_store.dart';
 import '../../data/mock/mock_data.dart';
 import '../../data/models/models.dart';
 import '../../data/session.dart';
@@ -9,15 +10,18 @@ import '../../data/session.dart';
 /// Follow state lives here so it survives tab switches.
 class FollowController extends Notifier<Set<String>> {
   @override
-  Set<String> build() => {
-    for (final p in MockData.people)
-      if (p.following) p.id,
-  };
+  Set<String> build() =>
+      ref.read(persistenceProvider).follows ??
+      {
+        for (final p in MockData.people)
+          if (p.following) p.id,
+      };
 
   void toggle(String id) {
     final next = Set<String>.from(state);
     next.contains(id) ? next.remove(id) : next.add(id);
     state = next;
+    ref.read(persistenceProvider).saveFollows(next);
   }
 }
 
