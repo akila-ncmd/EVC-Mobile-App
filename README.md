@@ -192,9 +192,14 @@ All three are enforced by `accessibility_test.dart` rather than left as prose.
 > commercial use**. No affiliation with or endorsement by any rights holder is
 > implied or claimed.
 
-Swap `EvcArtwork`'s sources and `MockData` before any public release. Demo
-audio is royalty-free (SoundHelix); demo video is Big Buck Bunny (Blender
-Foundation, CC-BY).
+Swap `EvcArtwork`'s sources and `MockData` before any public release. Demo audio is royalty-free (SoundHelix); demo video is the Sintel trailer
+(Blender Foundation, CC-BY, hosted by W3C).
+
+> Both are third-party URLs and can disappear without notice — the original
+> Big Buck Bunny source started returning 403 and broke video playback in
+> production. `EvcVideoPlayer` surfaces this as a visible error with a retry
+> rather than a black rectangle, but for anything long-lived, host the media
+> yourself.
 
 ## Status
 

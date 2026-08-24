@@ -5,9 +5,13 @@ import '../models/models.dart';
 /// Everything the app renders comes from here, reached through
 /// [MediaRepository] so a real API can replace it without touching the UI.
 abstract final class MockData {
-  /// Royalty-free demo stream (Blender Foundation, CC-BY).
-  static const demoVideoUrl =
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+  /// Royalty-free demo stream: the Sintel trailer (Blender Foundation,
+  /// CC-BY), hosted by W3C. Serves 206 range responses, which the player
+  /// needs for seeking.
+  ///
+  /// The previous source — Google's gtv-videos-bucket — began returning 403
+  /// and silently broke video playback in production.
+  static const demoVideoUrl = 'https://media.w3.org/2010/05/sintel/trailer.mp4';
 
   static const user = UserProfile(
     name: 'Namal Rashmika',
