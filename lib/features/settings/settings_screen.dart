@@ -19,7 +19,7 @@ class SettingsScreen extends ConsumerWidget {
         AppSpacing.gutter,
         AppSpacing.md,
         AppSpacing.gutter,
-        AppSpacing.xl,
+        AppSpacing.xxl + AppSpacing.xl,
       ),
       children: [
         Text('Settings', style: AppTypography.screenTitle),

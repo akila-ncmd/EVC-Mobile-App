@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -15,13 +16,26 @@ extension EvcTabInfo on EvcTab {
     EvcTab.settings => 'Settings',
   };
 
+  /// Outline when idle, filled when selected — the standard mobile cue that
+  /// tells you where you are without relying on colour alone.
   IconData get icon => switch (this) {
+    EvcTab.home => Icons.home_outlined,
+    EvcTab.search => Icons.search,
+    EvcTab.library => Icons.video_library_outlined,
+    EvcTab.player => Icons.play_circle_outline,
+    EvcTab.settings => Icons.settings_outlined,
+  };
+
+  IconData get activeIcon => switch (this) {
     EvcTab.home => Icons.home,
     EvcTab.search => Icons.search,
-    EvcTab.library => Icons.dehaze,
-    EvcTab.player => Icons.play_arrow,
+    EvcTab.library => Icons.video_library,
+    EvcTab.player => Icons.play_circle_filled,
     EvcTab.settings => Icons.settings,
   };
+
+  /// The tab bar is tight; "My Library" needs a shorter label there.
+  String get shortLabel => this == EvcTab.library ? 'Library' : label;
 }
 
 /// The persistent five-tab bar present on every main screen.
@@ -36,12 +50,19 @@ class EvcTabBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.card,
-        boxShadow: AppShadows.raised,
+        border: Border(top: BorderSide(color: Color(0x1AEADBDB))),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x59000000),
+            blurRadius: 24,
+            offset: Offset(0, -6),
+          ),
+        ],
       ),
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 70,
+          height: 64,
           child: Row(
             children: [
               for (final tab in EvcTab.values)
@@ -49,7 +70,11 @@ class EvcTabBar extends StatelessWidget {
                   child: _TabItem(
                     tab: tab,
                     selected: tab == current,
-                    onTap: () => onSelect(tab),
+                    onTap: () {
+                      // A tab switch should feel physical, like native.
+                      HapticFeedback.selectionClick();
+                      onSelect(tab);
+                    },
                   ),
                 ),
             ],
@@ -79,33 +104,49 @@ class _TabItem extends StatelessWidget {
       button: true,
       selected: selected,
       label: tab.label,
+      excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
+        splashColor: AppColors.blush.withValues(alpha: 0.08),
+        highlightColor: Colors.transparent,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(tab.icon, color: color, size: 26),
-            const SizedBox(height: 2),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                tab.label,
-                maxLines: 1,
-                style: AppTypography.tabLabel.copyWith(
+            // A pill behind the active icon reads at a glance and survives
+            // greyscale, unlike a colour change alone.
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: selected
+                    ? AppColors.blush.withValues(alpha: 0.16)
+                    : Colors.transparent,
+                borderRadius: AppRadius.pillR,
+              ),
+              child: AnimatedScale(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutBack,
+                scale: selected ? 1.06 : 1,
+                child: Icon(
+                  selected ? tab.activeIcon : tab.icon,
                   color: color,
-                  height: 1.1,
+                  size: 24,
                 ),
               ),
             ),
             const SizedBox(height: 3),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 3,
-              width: selected ? 24 : 0,
-              decoration: const BoxDecoration(
-                color: AppColors.blush,
-                borderRadius: AppRadius.pillR,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                tab.shortLabel,
+                maxLines: 1,
+                style: AppTypography.tabLabel.copyWith(
+                  color: color,
+                  height: 1.1,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                ),
               ),
             ),
           ],

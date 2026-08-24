@@ -34,6 +34,26 @@ abstract final class AppTheme {
         thickness: 1,
         space: 1,
       ),
+      // Floating so toasts clear the tab bar and mini player instead of
+      // appearing behind them.
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.deep,
+        contentTextStyle: AppTypography.body,
+        shape: const RoundedRectangleBorder(borderRadius: AppRadius.cardR),
+        insetPadding: const EdgeInsets.fromLTRB(
+          AppSpacing.md,
+          AppSpacing.md,
+          AppSpacing.md,
+          AppSpacing.xxl + AppSpacing.lg,
+        ),
+        elevation: 8,
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.blush,
+        linearTrackColor: AppColors.pill,
+        circularTrackColor: Colors.transparent,
+      ),
       splashFactory: InkRipple.splashFactory,
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {

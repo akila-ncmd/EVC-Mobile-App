@@ -110,7 +110,7 @@ class _PlaylistList extends StatelessWidget {
         AppSpacing.gutter,
         0,
         AppSpacing.gutter,
-        AppSpacing.xl,
+        AppSpacing.xxl + AppSpacing.xl,
       ),
       itemCount: playlists.length,
       separatorBuilder: (context, index) =>
@@ -199,7 +199,7 @@ class _TrackList extends ConsumerWidget {
         AppSpacing.gutter,
         0,
         AppSpacing.gutter,
-        AppSpacing.xl,
+        AppSpacing.xxl + AppSpacing.xl,
       ),
       itemCount: tracks.length,
       itemBuilder: (context, i) {

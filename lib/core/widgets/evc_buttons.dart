@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -64,7 +65,12 @@ class _EvcButtonState extends State<EvcButton> {
       enabled: enabled,
       label: widget.label,
       child: GestureDetector(
-        onTapDown: enabled ? (_) => setState(() => _down = true) : null,
+        onTapDown: enabled
+            ? (_) {
+                HapticFeedback.lightImpact();
+                setState(() => _down = true);
+              }
+            : null,
         onTapCancel: enabled ? () => setState(() => _down = false) : null,
         onTapUp: enabled ? (_) => setState(() => _down = false) : null,
         onTap: widget.onPressed,

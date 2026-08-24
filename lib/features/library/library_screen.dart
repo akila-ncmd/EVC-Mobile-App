@@ -21,64 +21,66 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.gutter,
-        AppSpacing.md,
-        AppSpacing.gutter,
-        AppSpacing.xl,
+    return EvcRefresh(
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.gutter,
+          AppSpacing.md,
+          AppSpacing.gutter,
+          AppSpacing.xxl + AppSpacing.xl,
+        ),
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.more_vert, color: AppColors.textDisplay),
+              const SizedBox(width: AppSpacing.sm),
+              Text('My Library', style: AppTypography.screenTitle),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          EvcPillGroup(
+            labels: const ['Year', 'Genre', 'IMDB Ratings'],
+            selectedIndex: _filter,
+            onChanged: (i) => setState(() => _filter = i),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            mainAxisSpacing: AppSpacing.md,
+            crossAxisSpacing: AppSpacing.md,
+            children: [
+              _CategoryTile(
+                label: 'Owned',
+                kind: OwnershipKind.owned,
+                imageUrl: 'assets/images/art_avengers.png',
+                seed: 0,
+                onTap: () => context.push('/library/owned'),
+              ),
+              _CategoryTile(
+                label: 'Rented',
+                kind: OwnershipKind.rented,
+                imageUrl: 'assets/images/art_eminem.png',
+                seed: 1,
+                onTap: () => context.push('/library/rented'),
+              ),
+              _CategoryTile(
+                label: 'Gifted',
+                kind: OwnershipKind.gifted,
+                imageUrl: 'assets/images/art_cyclops.png',
+                seed: 2,
+                onTap: () => context.push('/library/gifted'),
+              ),
+              _AddTile(onTap: () => context.push('/search')),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          const _ContinueWatching(),
+          const SizedBox(height: AppSpacing.xl),
+          const _LibrarySummary(),
+        ],
       ),
-      children: [
-        Row(
-          children: [
-            const Icon(Icons.more_vert, color: AppColors.textDisplay),
-            const SizedBox(width: AppSpacing.sm),
-            Text('My Library', style: AppTypography.screenTitle),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        EvcPillGroup(
-          labels: const ['Year', 'Genre', 'IMDB Ratings'],
-          selectedIndex: _filter,
-          onChanged: (i) => setState(() => _filter = i),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          mainAxisSpacing: AppSpacing.md,
-          crossAxisSpacing: AppSpacing.md,
-          children: [
-            _CategoryTile(
-              label: 'Owned',
-              kind: OwnershipKind.owned,
-              imageUrl: 'assets/images/art_avengers.png',
-              seed: 0,
-              onTap: () => context.push('/library/owned'),
-            ),
-            _CategoryTile(
-              label: 'Rented',
-              kind: OwnershipKind.rented,
-              imageUrl: 'assets/images/art_eminem.png',
-              seed: 1,
-              onTap: () => context.push('/library/rented'),
-            ),
-            _CategoryTile(
-              label: 'Gifted',
-              kind: OwnershipKind.gifted,
-              imageUrl: 'assets/images/art_cyclops.png',
-              seed: 2,
-              onTap: () => context.push('/library/gifted'),
-            ),
-            _AddTile(onTap: () => context.push('/search')),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.xl),
-        const _ContinueWatching(),
-        const SizedBox(height: AppSpacing.xl),
-        const _LibrarySummary(),
-      ],
     );
   }
 }

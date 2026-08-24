@@ -85,28 +85,32 @@ class _DiscoveryScreenState extends ConsumerState<DiscoveryScreen> {
                       ref.read(searchQueryProvider.notifier).state = '';
                     },
                   )
-                : ListView.separated(
-                    padding: const EdgeInsets.only(
-                      left: AppSpacing.gutter,
-                      right: AppSpacing.gutter,
-                      bottom: AppSpacing.xl,
+                : EvcRefresh(
+                    onRefresh: () async =>
+                        ref.invalidate(searchResultsProvider),
+                    child: ListView.separated(
+                      padding: const EdgeInsets.only(
+                        left: AppSpacing.gutter,
+                        right: AppSpacing.gutter,
+                        bottom: AppSpacing.xxl + AppSpacing.xl,
+                      ),
+                      itemCount: items.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: AppSpacing.md),
+                      itemBuilder: (context, i) {
+                        final item = items[i];
+                        return EvcAppear(
+                          index: i,
+                          child: EvcPosterCard(
+                            imageUrl: item.imageUrl,
+                            seed: i,
+                            showPlay: i == 1,
+                            caption: i == 1 ? 'Tap to Play…' : null,
+                            onTap: () => _select(context, item.title, item.id),
+                          ),
+                        );
+                      },
                     ),
-                    itemCount: items.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: AppSpacing.md),
-                    itemBuilder: (context, i) {
-                      final item = items[i];
-                      return EvcAppear(
-                        index: i,
-                        child: EvcPosterCard(
-                          imageUrl: item.imageUrl,
-                          seed: i,
-                          showPlay: i == 1,
-                          caption: i == 1 ? 'Tap to Play…' : null,
-                          onTap: () => _select(context, item.title, item.id),
-                        ),
-                      );
-                    },
                   ),
           ),
         ),

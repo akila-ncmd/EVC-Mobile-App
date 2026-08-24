@@ -21,8 +21,12 @@ abstract final class AppTypography {
     fontSize: size,
     fontWeight: weight,
     color: color,
-    height: height,
+    height: height ?? 1.25,
     letterSpacing: spacing,
+    // Poppins has an asymmetric descent. Flutter centres the text *box*, so
+    // without even leading the glyphs sit visibly high inside buttons, pills
+    // and any fixed-height container.
+    leadingDistribution: TextLeadingDistribution.even,
   );
 
   /// Splash lockup only.
@@ -54,10 +58,16 @@ abstract final class AppTypography {
   static TextStyle get meta =>
       _sans(size: 13, weight: FontWeight.w500, color: AppColors.textMuted);
 
-  static TextStyle get button =>
-      _sans(size: 17, weight: FontWeight.w700, color: AppColors.textDisplay);
+  /// Single-line control labels use tight leading so they optically centre.
+  static TextStyle get button => _sans(
+    size: 17,
+    weight: FontWeight.w700,
+    color: AppColors.textDisplay,
+    height: 1.1,
+  );
 
-  static TextStyle get pillLabel => _sans(size: 15, weight: FontWeight.w600);
+  static TextStyle get pillLabel =>
+      _sans(size: 15, weight: FontWeight.w600, height: 1.1);
 
   static TextStyle get tabLabel => _sans(size: 11, weight: FontWeight.w600);
 

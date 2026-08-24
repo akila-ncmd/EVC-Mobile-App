@@ -30,40 +30,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final repo = ref.watch(mediaRepositoryProvider);
     final profile = ref.watch(sessionProvider).profile;
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.sm,
-            AppSpacing.md,
-            AppSpacing.gutter,
-            AppSpacing.md,
+    return EvcRefresh(
+      onRefresh: () async {
+        await Future<void>.delayed(const Duration(milliseconds: 700));
+        ref.invalidate(searchResultsProvider);
+      },
+      child: ListView(
+        // Extra bottom room so the last rail clears the tab bar and the
+        // mini player rather than hiding behind them.
+        padding: const EdgeInsets.only(bottom: AppSpacing.xxl + AppSpacing.xl),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.sm,
+              AppSpacing.md,
+              AppSpacing.gutter,
+              AppSpacing.md,
+            ),
+            child: EvcProfileHeader(
+              name: profile?.firstName ?? 'Namal',
+              imageUrl: profile?.imageUrl,
+              showMenu: true,
+              onMenu: () => _showMenu(context),
+            ),
           ),
-          child: EvcProfileHeader(
-            name: profile?.firstName ?? 'Namal',
-            imageUrl: profile?.imageUrl,
-            showMenu: true,
-            onMenu: () => _showMenu(context),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
+            child: EvcPillGroup(
+              labels: const ['Artists', 'Producers', 'Directors'],
+              selectedIndex: _role,
+              onChanged: (i) => setState(() => _role = i),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
-          child: EvcPillGroup(
-            labels: const ['Artists', 'Producers', 'Directors'],
-            selectedIndex: _role,
-            onChanged: (i) => setState(() => _role = i),
+          const SizedBox(height: AppSpacing.sm),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
+            child: _FollowStrip(people: repo.people(_roles[_role])),
           ),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
-          child: _FollowStrip(people: repo.people(_roles[_role])),
-        ),
-        _Section(title: 'Popular Now', items: repo.popularNow()),
-        _Section(title: 'Newest', items: repo.newest()),
-        _Section(title: 'Most Viewed', items: repo.mostViewed()),
-      ],
+          _Section(title: 'Popular Now', items: repo.popularNow()),
+          _Section(title: 'Newest', items: repo.newest()),
+          _Section(title: 'Most Viewed', items: repo.mostViewed()),
+        ],
+      ),
     );
   }
 
